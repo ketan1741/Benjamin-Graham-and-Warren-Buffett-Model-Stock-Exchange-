@@ -353,7 +353,7 @@ final=list(zip(companynames,netsales_list,debtequity_ratio,icr_list,roe_list,pe)
 
 filtered_list=pd.DataFrame(final,columns=['Company','Net Sales in cr.','Debt to Equity Ratio','Interest Coverage Ratio','Return On Equity (ROE)','P/E Ratio'])
 
-#Saving to csv file
+#Saving post filteration to csv file
 filtered_list.to_csv('After_Filteration.csv', index=False)
 
 print(filtered_list)
