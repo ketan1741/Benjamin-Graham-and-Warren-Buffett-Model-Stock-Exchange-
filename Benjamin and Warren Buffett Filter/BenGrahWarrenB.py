@@ -105,26 +105,29 @@ for i in range(0,len(filterder)):
 ''' Scraping Interest Coverage Ratio '''
 #links for ratio page
 linkso_r=[]
+
 for i in range(0,len(linkso)):
     a=linkso[i].find('balance-sheet')
     b=linkso[i][:a]+'ratios'+linkso[i][a+13:]
     linkso_r.append(b)
 
 icr_list=[]
+
 for i in range(0,len(linkso_r)): 
     pageold=requests.get(linkso_r[i])
     soup = BeautifulSoup(pageold.text, 'html.parser')
     about=soup.findAll('table')
     about=str(about)
     a=re.findall('<td>Interest Cover</td>\n.*</td>',about)
-    icr=re.findall('>[0-9].*<',str(a))
+    #icr = re.findall("[^a-zA-Z:]([-+]?\d+[\.]?\d*)", str(a))
+    icr=re.findall('>[-+]?[0-9].*<',str(a))
     icr=icr[0][1:len(icr[0])-1]
-    if(len(icr)>6):
-        a=icr.find(',')
-        icr_list.append(float(icr[:a]+icr[a+1:]))
+    if(icr.find(',') != -1):
+        b=icr.find(',')
+        icr_list.append(float(icr[:b]+icr[b+1:]))
+        b=-1
     else:
         icr_list.append(float(icr))
-
 
 filtericr=[]
 filtercomp=[]
@@ -151,6 +154,7 @@ for i in range(0,len(filtericr)):
     
 ''' Scraping Total Income'''
 
+# links for profit loss page is stored in links_pl
 links_pl=[]
 for i in range(0,len(links)):
     a=links[i].find('balance-sheet')
@@ -166,11 +170,13 @@ for i in range(0,len(links_pl)):
     a=re.findall('<td>Total Revenue</td>\n.*</td>',about)
     ti=re.findall('>[0-9].*<',str(a))
     ti=ti[0][1:len(ti[0])-1]
-    if(len(ti)>6):
-        a=ti.find(',')
-        ti_list.append(float(ti[:a]+ti[a+1:]))
+    if(ti.find(',') != -1):
+        b=ti.find(',')
+        ti_list.append(float(ti[:b]+ti[b+1:]))
+        b = -1
     else:
         ti_list.append(float(ti))
+
 
 ''' Scraping Equity Share Capital'''
 tot_assets=[]
@@ -182,36 +188,48 @@ for i in range(0,len(links)):
     soup = BeautifulSoup(pageold.text, 'html.parser')
     about=soup.findAll('table')
     about=str(about)
+    
+    ''' Scraping Total Assests'''
+    
     a=re.findall('<td>Total Assets</td>\n.*</td>',about)
-    totas=re.findall('>[0-9].*<',str(a))
+    totas=re.findall('>[-+]?[0-9].*<',str(a))
     totas=totas[0][1:len(totas[0])-1]
-    if(len(totas)>6):
-        a=totas.find(',')
-        tot_assets.append(float(totas[:a]+totas[a+1:]))
+    if(totas.find(',') != -1):
+        b=totas.find(',')
+        tot_assets.append(float(totas[:b]+totas[b+1:]))
+        b=-1
     else:
         tot_assets.append(float(totas))
     
+    ''' Scrapping Total Non- Current Liabilities.'''
+    
     a=re.findall('<td>Total Non-Current Liabilities</td>\n.*</td>',about)
-    totncl=re.findall('>[0-9].*<',str(a))
+    totncl=re.findall('>[-+]?[0-9].*<',str(a))
     totncl=totncl[0][1:len(totncl[0])-1]
-    if(len(totncl)>6):
-        a=totncl.find(',')
-        noncurrent_lia.append(float(totncl[:a]+totncl[a+1:]))
+    if(totncl.find(',') != -1):
+        b=totncl.find(',')
+        noncurrent_lia.append(float(totncl[:b]+totncl[b+1:]))
+        b = -1
     else:
         noncurrent_lia.append(float(totncl))
+        
+    ''' Scrapping Total Current Liabilites. '''
     
     a=re.findall('<td>Total Current Liabilities</td>\n.*</td>',about)
-    totcl=re.findall('>[0-9].*<',str(a))
+    totcl=re.findall('>[-+]?[0-9].*<',str(a))
     totcl=totcl[0][1:len(totcl[0])-1]
-    if(len(totcl)>6):
-        a=totcl.find(',')
-        current_lia.append(float(totcl[:a]+totcl[a+1:]))
+    if(totcl.find(',') != -1):
+        b=totcl.find(',')
+        current_lia.append(float(totcl[:b]+totcl[b+1:]))
+        b=-1
     else:
         current_lia.append(float(totcl))
     
-roe_list=np.array(ti_list)/(np.array(tot_assets)-np.array(current_lia)-np.array(noncurrent_lia))
-roe_list=roe_list.tolist()
+# calculating Shareholder's Equity
 
+share_equity = np.array(tot_assets)-(np.array(current_lia) + np.array(noncurrent_lia))    
+roe_list = np.array(ti_list)/share_equity 
+roe_list = roe_list.tolist()
 
 
 ''' Scraping for PE'''
