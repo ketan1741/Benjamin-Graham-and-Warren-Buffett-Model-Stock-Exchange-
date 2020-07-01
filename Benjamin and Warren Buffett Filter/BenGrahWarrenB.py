@@ -259,12 +259,15 @@ for i in range(0,len(filterroe)):
 
 ''' Scraping for PE'''
 
+# links for ratio
+
 links_r=[]
 for i in range(0,len(links)):
     a=links[i].find('balance-sheet')
     b=links[i][:a]+'ratios'+links[i][a+13:]
     links_r.append(b)
 
+    
 pricbv=[]
 bkvshr=[]
 for i in range(0,len(links_r)):
@@ -272,22 +275,29 @@ for i in range(0,len(links_r)):
     soup = BeautifulSoup(pageold.text, 'html.parser')
     about=soup.findAll('table')
     about=str(about)
+    
+    ''' Scraping for price/book-value. '''
+    
     a=re.findall('<td>Price/BV.*</td>\n.*</td>',about)
-    pbv=re.findall('>[0-9].*<',str(a))
+    pbv=re.findall('>[-+]?[0-9].*<',str(a))
     pbv=pbv[0][1:len(pbv[0])-1]
-    if(len(pbv)>6):
-        a=pbv.find(',')
-        pricbv.append(float(pbv[:a]+pbv[a+1:]))
+    if(pbv.find(',') != -1):
+        b=pbv.find(',')
+        pricbv.append(float(pbv[:b]+pbv[b+1:]))
+        b=-1
     else:
         pricbv.append(float(pbv))
         
+    ''' Scraping for book-value/share. '''
+    
     a=re.findall('<td>Book Value.*/Share.*</td>\n.*</td>',about)
     a=a[0]
-    pbvs=re.findall('>[0-9].*<',str(a))
+    pbvs=re.findall('>[-+]?[0-9].*<',str(a))
     pbvs=pbvs[0][1:len(pbvs[0])-1]
-    if(len(pbvs)>6):
-        a=pbvs.find(',')
-        bkvshr.append(float(pbvs[:a]+pbvs[a+1:]))
+    if(pbvs.find(',') != -1):
+        b=pbvs.find(',')
+        bkvshr.append(float(pbvs[:b]+pbvs[b+1:]))
+        b=-1
     else:
         bkvshr.append(float(pbvs))
 
@@ -298,14 +308,14 @@ for i in range(0,len(links_pl)):
     about=soup.findAll('table')
     about=str(about)
     a=re.findall('<td>Basic EPS.*</td>\n.*</td>',about)
-    eps=re.findall('>[0-9].*<',str(a))
+    eps=re.findall('>[-+]?[0-9].*<',str(a))
     eps=eps[0][1:len(eps[0])-1]
-    if(len(eps)>6):
-        a=eps.find(',')
-        eps_list.append(float(eps[:a]+eps[a+1:]))
+    if(eps.find(',') != -1):
+        b=eps.find(',')
+        eps_list.append(float(eps[:b]+eps[b+1:]))
+        b=-1
     else:
         eps_list.append(float(eps))
-
 
 pe=np.array(bkvshr)*np.array(pricbv)/np.array(eps_list)
 pe=pe.tolist()
@@ -342,5 +352,8 @@ for i in range(0,len(filterpe)):
 final=list(zip(companynames,netsales_list,debtequity_ratio,icr_list,roe_list,pe))
 
 filtered_list=pd.DataFrame(final,columns=['Company','Net Sales in cr.','Debt to Equity Ratio','Interest Coverage Ratio','Return On Equity (ROE)','P/E Ratio'])
+
+#Saving to csv file
+filtered_list.to_csv('After_Filteration.csv', index=False)
 
 print(filtered_list)
