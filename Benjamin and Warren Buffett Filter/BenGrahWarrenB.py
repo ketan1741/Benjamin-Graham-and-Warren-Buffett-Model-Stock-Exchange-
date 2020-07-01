@@ -65,6 +65,7 @@ for i in range(0,len(linkso)):
     a=linkso[i].find('balance-sheet')
     b=linkso[i][:a]+'ratios'+linkso[i][a+13:]
     linkso_r.append(b)
+    
 debtequity_ratio=[]
 for i in range(0,len(linkso_r)):
     pageold=requests.get(linkso_r[i])
@@ -72,7 +73,7 @@ for i in range(0,len(linkso_r)):
     about=soup.findAll('table')
     about=str(about)
     a=re.findall('<td>Debt Equity Ratio</td>\n.*</td>',about)
-    der=re.findall('>[0-9].*<',str(a))
+    der=re.findall('>[-+]?[0-9].*<',str(a))
     if(len(der)==0):
         der=0
     else:
