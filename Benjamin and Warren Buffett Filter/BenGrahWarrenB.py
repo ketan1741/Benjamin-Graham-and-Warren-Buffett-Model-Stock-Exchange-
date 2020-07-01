@@ -231,6 +231,31 @@ share_equity = np.array(tot_assets)-(np.array(current_lia) + np.array(noncurrent
 roe_list = np.array(ti_list)/share_equity 
 roe_list = roe_list.tolist()
 
+# Filtering ROE values less than 0.15
+filtersales=[]  
+filterder=[]
+filtericr=[]
+filterroe=[]
+filtercomp=[]
+filterlink=[]
+filterolink=[]
+for i in range(0,len(roe_list)):
+    if(roe_list[i]<0.15):
+        filtersales.append(netsales_list[i])
+        filterder.append(debtequity_ratio[i])
+        filtericr.append(icr_list[i])
+        filterroe.append(roe_list[i])
+        filtercomp.append(companynames[i])
+        filterlink.append(links[i])
+
+for i in range(0,len(filterroe)):
+    netsales_list.remove(filtersales[i])
+    debtequity_ratio.remove(filterder[i])
+    icr_list.remove(filtericr[i])
+    roe_list.remove(filterroe[i])
+    companynames.remove(filtercomp[i])
+    links.remove(filterlink[i])
+
 
 ''' Scraping for PE'''
 
