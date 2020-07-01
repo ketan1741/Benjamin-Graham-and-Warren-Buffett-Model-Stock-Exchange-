@@ -29,14 +29,15 @@ for i in range(0,len(linkso_pl)):
     about=soup.findAll('table')
     about=str(about)
     a=re.findall('<td>Net Sales</td>\n.*</td>',about)
-    netsales=re.findall('>[0-9].*<',str(a))
+    netsales=re.findall('>[-+]?[0-9].*<',str(a))
     netsales=netsales[0][1:len(netsales[0])-1]
-    if(len(netsales)>6):
-        a=netsales.find(',')
-        netsales_list.append(float(netsales[:a]+netsales[a+1:]))
+    if(netsales.find(',') != -1):
+        b=netsales.find(',')
+        netsales_list.append(float(netsales[:b]+netsales[b+1:]))
+        b=-1
     else:
         netsales_list.append(float(netsales))
-
+        
 '''  The Net Sales of each company is saved in the netsales list in Crores.
      Now filtering out the companies with less than 250 cr. Net Sales.'''
 filtersales=[]
