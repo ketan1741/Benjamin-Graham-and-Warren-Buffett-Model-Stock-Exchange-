@@ -12,6 +12,10 @@
 4. **Step 4:** Filtering out all companies with ROE less than 15% since they are earning less than their cost of capital. High ROE companies have a robust business model, which generates increased earnings for the company typically.
 5. **Step 5:** Filtering out all companies with PE ratio greater than 25 since they are too expensive even for a high-quality company. This enables us to pick companies which are relatively cheaper as against their actual value. He points out that applying these filters enables us to reduce and even eliminate a lot of fundamental risks while ensuring a robust business model, strong earning potential and a good buying price.
 
+
+## IMPORTANT!! 
+* If you would like to find the performance of different companies as per your choice apart from those in the 'Companies.csv' file, just add your required company's MoneyControl Balance Sheet link as per the format shown in the csv file.
+
 ## Note:
 * These values and filteration process is dynamic.
 * The data and values in the notebook might change based on the company's performance in the stock market.
