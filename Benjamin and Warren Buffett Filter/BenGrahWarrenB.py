@@ -35,7 +35,7 @@ import numpy as np
 # Read the data from the csv files
 
 data=pd.read_csv("Companies.csv")
-data.head()
+#data.head()
 
 
 # ### Analysing the dataset / Data cleaning.
@@ -45,19 +45,19 @@ data.head()
 
 # Checking for null values
 
-data.isnull().sum()
+#data.isnull().sum()
 
 
 # In[4]:
 
 
-data.info()
+#data.info()
 
 
 # In[5]:
 
 
-data.describe()
+#data.describe()
 
 
 # * The data looks clean and ready to be used.
@@ -87,18 +87,6 @@ for i in range(0,len(linkso)):
     linkso_pl.append(b)
 
 
-# In[7]:
-
-
-linkso
-
-
-# In[8]:
-
-
-linkso_pl
-
-
 # ## Implementation of Step - 1 :
 # **Filtering out all companies with sales less than Rs 250 cr.**
 
@@ -112,7 +100,7 @@ linkso_pl
 # > Bajaj Finserv and Infosys 
 # 
 
-# In[9]:
+# In[7]:
 
 
 netsales_list=[]
@@ -136,17 +124,17 @@ for i in linkso_pl:
 
 # * The Net Sales of each company is saved in the netsales list in Crores.
 
-# In[10]:
+# In[8]:
 
 
 # values in cr.
-netsales_list
+#netsales_list
 
 
 # #### Filtering. 
 # * The companies with less than 250 cr. Net Sales are to be filtered out/removed.
 
-# In[11]:
+# In[9]:
 
 
 filtersales=[]
@@ -174,7 +162,7 @@ for i in range(0,len(filtersales)):
 # * **Some of the data to be extracted is in old page format.**
 # * **The links of the old page is stored in linkso_r list.**
 
-# In[12]:
+# In[10]:
 
 
 #links for ratio page
@@ -199,15 +187,15 @@ for i in linkso_r:
     debtequity_ratio.append(float(der))
 
 
-# In[13]:
+# In[11]:
 
 
-debtequity_ratio
+#debtequity_ratio
 
 
 # #### Companies with Debt Equity Ratio greater than 0.3 are filtered/removed.
 
-# In[14]:
+# In[12]:
 
 
 filtersales=[]  
@@ -235,7 +223,7 @@ for i in range(0,len(filterder)):
 # <br>
 # ### Scraping Interest Coverage Ratio.
 
-# In[15]:
+# In[13]:
 
 
 #links for ratio page
@@ -267,27 +255,15 @@ for i in linkso_r:
         icr_list.append(float(icr))
 
 
-# In[16]:
+# In[14]:
 
 
-icr
-
-
-# In[17]:
-
-
-about
-
-
-# In[18]:
-
-
-icr_list
+#icr_list
 
 
 # #### Filtering out all companies with interest coverage ratio of less than 4.
 
-# In[19]:
+# In[15]:
 
 
 filtericr=[]
@@ -325,7 +301,7 @@ for i in range(0,len(filtericr)):
 # 
 # **Scraping Total Income**
 
-# In[20]:
+# In[16]:
 
 
 # links for profit loss page is stored in links_pl
@@ -354,10 +330,10 @@ for i in range(0,len(links_pl)):
 
 # * Total Net Income has been scrapped and stored in the ti_list variable.
 
-# In[21]:
+# In[17]:
 
 
-ti_list
+#ti_list
 
 
 # **Scraping Shareholder's Equity Share Capital**
@@ -366,7 +342,7 @@ ti_list
 # * Total Liabilities is **Total Non-Current Liabilities + Total Current Liabilities.**
 # * Total Non-Current Liabilities and Total Current Liabilities can be extracted from the website and later used in the formula.
 
-# In[22]:
+# In[18]:
 
 
 tot_assets=[]
@@ -419,31 +395,31 @@ for i in range(0,len(links)):
 
 # * The Total Assets is stored in tot_assets variable.
 
-# In[23]:
+# In[19]:
 
 
-tot_assets
+#tot_assets
 
 
 # * Total Non-Current Liabilities is stored in noncurrent_lia variable
 
-# In[24]:
+# In[20]:
 
 
-noncurrent_lia
+#noncurrent_lia
 
 
 # * Total Current Liabilities is stored in current_lia variable.
 
-# In[25]:
+# In[21]:
 
 
-current_lia
+#current_lia
 
 
 # **Calculating ROE from the scrapped data.**
 
-# In[26]:
+# In[22]:
 
 
 # calculating Shareholder's Equity
@@ -451,25 +427,25 @@ current_lia
 share_equity = np.array(tot_assets)-(np.array(current_lia) + np.array(noncurrent_lia))
 
 
-# In[27]:
+# In[23]:
 
 
 roe_list = np.array(ti_list)/share_equity 
 roe_list = roe_list.tolist()
 
 
-# In[28]:
+# In[24]:
 
 
 # Values are in proportion.
-roe_list
+#roe_list
 
 
 # ### Filtering ROE values.
 # 
 # * Filtering companies having ROE value less than 15% (0.15).
 
-# In[29]:
+# In[25]:
 
 
 filtersales=[]  
@@ -510,7 +486,7 @@ for i in range(0,len(filterroe)):
 
 # ### Scraping for Current Share Price.
 
-# In[30]:
+# In[26]:
 
 
 # links for ratio
@@ -558,23 +534,23 @@ for i in range(0,len(links_r)):
 
 # * Price per book value is stored in the pricbv variable.
 
-# In[31]:
+# In[27]:
 
 
-pricbv
+#pricbv
 
 
 # * Book-value per share is store in bkvshr variable.
 
-# In[32]:
+# In[28]:
 
 
-bkvshr
+#bkvshr
 
 
 # ### Scraping Earnings Per Share.
 
-# In[33]:
+# In[29]:
 
 
 eps_list=[]
@@ -596,15 +572,15 @@ for i in range(0,len(links_pl)):
 
 # * Earnings per share is stored in eps_list variable.
 
-# In[34]:
+# In[30]:
 
 
-eps_list
+#eps_list
 
 
 # ### Calculating Price to Equity Ratio (PE) as per the formula.
 
-# In[35]:
+# In[31]:
 
 
 pe=np.array(bkvshr)*np.array(pricbv)/np.array(eps_list)
@@ -613,15 +589,15 @@ pe=pe.tolist()
 
 # * PE ratio values are store in pe variable.
 
-# In[36]:
+# In[32]:
 
 
-pe
+#pe
 
 
 # **Filtering out all companies with PE ratio greater than 25**
 
-# In[37]:
+# In[33]:
 
 
 ''' Filtering wrt PE values '''
@@ -658,7 +634,7 @@ for i in range(0,len(filterpe)):
 
 # **The final list of companies that have passed the filter is made into a dataframe.**
 
-# In[38]:
+# In[34]:
 
 
 final=list(zip(companynames,netsales_list,debtequity_ratio,icr_list,roe_list,pe))
@@ -666,7 +642,7 @@ final=list(zip(companynames,netsales_list,debtequity_ratio,icr_list,roe_list,pe)
 filtered_list=pd.DataFrame(final,columns=['Company','Net Sales in cr.','Debt to Equity Ratio','Interest Coverage Ratio','Return On Equity (ROE)','P/E Ratio'])
 
 
-# In[39]:
+# In[35]:
 
 
 print(filtered_list)
@@ -674,7 +650,7 @@ print(filtered_list)
 
 # * Storing these companies in an excel sheet.
 
-# In[40]:
+# In[36]:
 
 
 filtered_list.to_csv('After_Filteration.csv', index=False)
